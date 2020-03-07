@@ -1,7 +1,5 @@
  <template lang="pug">
   #TypingLoader.d-flex.align-items-top.justify-content-left
-    .question--thumbnail--container
-      img#basileQuestionThumbnail(:src="basilePng")
     .question.d-flex.align-items-center.justify-content-left
       span
       span
@@ -9,15 +7,8 @@
 </template>
 
 <script>
-import basilePng from '../assets/bot.png'
-
 export default {
-  name: "TypingLoader",
-  data() {
-    return {
-      basilePng
-    }
-  }
+  name: "TypingLoader"
 }
 </script>
 
