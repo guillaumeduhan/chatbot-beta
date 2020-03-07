@@ -3,6 +3,8 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+import { firestorePlugin } from 'vuefire'
 import _ from 'lodash'
 import VueMq from 'vue-mq'
 
@@ -16,6 +18,7 @@ Vue.use(VueMq, {
 import MyPlugin from './plugins/my-plugin'
 
 Vue.use(BootstrapVue)
+Vue.use(firestorePlugin)
 
 Vue.config.productionTip = false
 Vue.prototype.$log = console.log
