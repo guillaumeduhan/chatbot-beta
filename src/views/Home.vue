@@ -1,31 +1,19 @@
 <template lang="pug">
 #Home
-  Loader(v-if="showLoader")
-  Timeline
+  p hello
 </template>
 
 <script>
-import Loader from '../components/Loader.vue'
-import TestSide from '../components/TestSide.vue'
-import Timeline from '../components/Timeline.vue'
-import botpng from '../assets/bot.png'
-
 export default {
   name: 'Home',
-  components: {
-    Loader,
-    Timeline,
-    TestSide
-  },
   data() {
     return {
-      botpng,
-      showLoader: false
+      isLoading: false
     }
   },
   mounted() {
     setTimeout(() => {
-      this.showLoader = false
+      this.isLoading = false
     }, 10000)
   }
 }
