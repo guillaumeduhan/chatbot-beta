@@ -23,11 +23,13 @@ export default {
     -moz-animation:    grow 1.5s infinite; /* Fx 5+ */
     -o-animation:      grow 1.5s infinite; /* Opera 12+ */
     animation:         grow 1.5s infinite; /* IE 10+, Fx 29+ */
+
     &--thumbnail--container {
       max-width: 40px;
       overflow: hidden;
       margin: 4px;
       border-radius: 40px;
+
       #basileQuestionThumbnail {
         max-width: 40px;
       }
