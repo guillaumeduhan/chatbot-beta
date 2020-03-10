@@ -13,12 +13,12 @@ const routes = [
     name: 'NotFound',
     component: NotFound,
   }, {
-    path: '/',
+    path: '/:chatbotName',
     name: 'home',
     component: Home,
     meta: {
       auth: false,
-    },
+    }
   },
 ]
 
