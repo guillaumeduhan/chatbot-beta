@@ -15,10 +15,11 @@ Vue.use(VueMq, {
   }
 })
 
-import MyPlugin from './plugins/my-plugin'
+import FireGun from './plugins/FireGun'
 
 Vue.use(BootstrapVue)
 Vue.use(firestorePlugin)
+Vue.use(FireGun)
 
 Vue.config.productionTip = false
 Vue.prototype.$log = console.log
