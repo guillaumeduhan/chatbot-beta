@@ -1,5 +1,5 @@
 const state = {
-  name: 'John Doe',
+  name: undefined,
 }
 
 const mutations = {
