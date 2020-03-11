@@ -1,7 +1,11 @@
 @import 'utilities/timeline';
 @import 'utilities/variables';
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import url('https://fonts.googleapis.com/css?family=Almarai:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Spectral:300,300i,400,500,700&display=swap');
+
+body {
+  // font-family: 'Spectral', serif;
+}
 
 img {
   max-width: 100%;
