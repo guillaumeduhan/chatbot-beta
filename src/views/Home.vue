@@ -1,13 +1,11 @@
 <template lang="pug">
 #Home
   .timeline.d-flex.flex-column
-    .timeline--line.d-flex(v-for="interaction, index in interactionsList", :key="index", :class="['timeline--line--' + interaction.type, { 'align-items-end justify-content-end' : interaction.type === 'answer' }]")
-      Button(v-if="interaction.type !== 'answers'", :interaction="interaction", :color="color")
-      Button(v-else, v-for="answer, number in interaction.answers", :key="number", :interaction="answer", :color="color")
+    Answer(v-for="interaction, index in timeline", :key="index", :class="['timeline--line--' + interaction.type, { 'align-items-end justify-content-end' : interaction.type === 'answer' }]", :interaction="interaction", :name="name", :color="color")
 </template>
 
 <script>
-import Button from '../components/elements/Button.vue'
+import Answer from '../components/conversation/Answer.vue'
 import { idGenerator } from '../services/helpers.js'
 
 export default {
@@ -15,19 +13,29 @@ export default {
   data() {
     return {
       color: undefined,
+      counter: 0,
+      isLoading: false,
       model: undefined,
-      isLoading: false
+      name: undefined,
+      timeline: []
     }
   },
   components: {
-    Button
-  },
-  computed: {
-    interactionsList() {
-      return _.orderBy(this.model, 'position', 'asc');
-    }
+    Answer
   },
   methods: {
+    initConversation() {
+      this.pushToTimeline(this.model[0])
+    },
+    pushToTimeline(entry) {
+      // this.isLoading = true
+      // this.timeline.push(entry)
+      // if (entry.delay) {
+      //   setTimeout(() => {
+      //     this.isLoading = false
+      //   }, entry.delay * 1000)
+      // }
+    },
     searchAndMount(botModel) {
       let newAnswersModel = {
         type: 'answers',
@@ -41,15 +49,17 @@ export default {
         }
       })
       botModel[idGenerator()] = newAnswersModel
-      this.model = botModel
+      this.model = _.orderBy(botModel, 'position', 'asc');
+      this.initConversation()
     }
   },
   mounted() {
     this.$firegun.getBot(this.$route.params.chatbotName)
     .then((data) => {
       if (data.exists) {
-        this.searchAndMount(data.data().chatbot_model)
+        this.name = data.data().chatbot_name
         this.color = data.data().color
+        this.searchAndMount(data.data().chatbot_model)
       } else {
         console.log("no bot")
       }
