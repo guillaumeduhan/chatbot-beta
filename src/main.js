@@ -15,6 +15,10 @@ Vue.use(VueMq, {
   }
 })
 
+Vue.filter('letterGenerator', (string) => {
+  return string.split('')[0].toUpperCase()
+})
+
 import FireGun from './plugins/FireGun'
 
 Vue.use(BootstrapVue)
