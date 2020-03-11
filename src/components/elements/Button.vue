@@ -1,10 +1,10 @@
 <template lang="pug">
   .Button
-    .Button--content(:style="[ interaction.type === 'answer' ? { background: color } : { background : 'grey' } ]")
+    .Button--content(:class="interaction.type", :style="[interaction.type === 'answer' ? {backgroundColor : color} : {}]")
       .Button--content--answer(v-if="interaction.type === 'question' || interaction.type === 'message'")
-        .Button--content--title {{ interaction.title }}
+        p {{ interaction.title }}
       .Button--content--answer(v-if="interaction.type === 'answer'")
-        .Button--content--title {{ interaction.title }}
+        p {{ interaction.title }}
 </template>
 
 <script>
@@ -36,9 +36,24 @@ export default {
     .Button--content {
       font-size: 16px;
       color: white;
+      min-height: 40px;
       width: fit-content;
       padding: 6px 18px;
       border-radius: 20px;
+      background: $grey;
+      &.question, &.message {
+        background: $blueEnd;
+        color: $grey;
+      }
+      &.answer {
+
+      }
+      &--answer {
+        p {
+          margin: 0;
+          line-height: 30px;
+        }
+      }
     }
   }
 </style>
