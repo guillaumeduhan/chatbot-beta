@@ -16,10 +16,10 @@ export default {
   data() {
     return {
       color: undefined,
-      count: 0,
       model: undefined,
       name: undefined,
       options: [],
+      position: 1,
       timeline: []
     }
   },
@@ -27,49 +27,18 @@ export default {
     Answer
   },
   methods: {
-    increaseCount() {
-      // this.count++
-      // if (this.model[this.count].type !== 'answers') {
-      //   setTimeout(() => {
-      //     this.pushNextEntry(this.model[this.count])
-      //   }, 500)
-      // } else {
-      //   this.pushNextEntry(this.model[this.count])
-      // }
-    },
     initConversation() {
-      this.pushNextEntry(this.model[0].id)
+      
     },
-    lookForEntryInModel(id) {
-      // _.forEach(this.model, (entry) => {
-      //   if (entry.id === id) {
-      //     this.pushNextEntry(entry)
-      //   } else {
-      //     console.log("non existing entry with this id: " + id)
-      //   }
-      // })
-    },
-    pushNextEntry(id) {
-      _.forEach(this.model, (entry) => {
-        if (entry.id === id) {
-          this.timeline.push(entry)
-            if (entry.next) {
-              setTimeout(() => {
-                this.pushNextEntry(entry.next)
-              }, entry.delay + 500)
-            }
-        } else {
-          console.log("pas trouvé")
-        }
-      })
-      // if (entry.type !== 'answers') {
-      //   this.options = []
-      //   this.timeline.push(entry)
-      //   if (entry.type === 'selected') {
-      //     this.lookForEntryInModel(entry.leadTo)
-      //   }
+    pushEntryToTimeline(entry) {
+      // if (entry.delay) {
+      //   setTimeout(() => {
+      //     this.timeline.push(entry)
+      //     this.position++
+      //     this.timeline.push(this.model)
+      //   }, entry.delay + 500)
       // } else {
-      //   this.options.push(entry)
+      //   this.timeline.push(entry)
       // }
     },
     searchAndMount(botModel) {
@@ -77,16 +46,7 @@ export default {
         type: 'answers',
         answers: {}
       }
-      // l'idée ici c'est de recréer un objet réponses à partir des réponses
-      _.forEach(botModel, (line) => {
-        if (line.type === 'answer') {
-          newAnswersModel.answers[line.id] = line
-          delete botModel[line.id]
-        }
-      })
-      botModel[idGenerator()] = newAnswersModel
       this.model = _.orderBy(botModel, 'position', 'asc');
-      console.log(this.model)
       this.initConversation()
     }
   },
