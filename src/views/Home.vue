@@ -1,15 +1,14 @@
 <template lang="pug">
 #Home.d-flex.flex-column.align-items-end.justify-content-end
   .timeline.d-flex.flex-column.justify-content-end
-    Answer(v-for="interaction, index in timeline", :key="index", :class="['timeline--line--' + interaction.type, { 'align-items-end justify-content-end' : interaction.type === 'answer' }]", :interaction="interaction", :name="name", :color="color", @answerDisplayed="displayNextAnswer")
+    Answer(v-for="interaction, index in timeline", :key="index", :class="['timeline--line--' + interaction.type, { 'align-items-end justify-content-end' : interaction.type === 'answer' }]", :buttonSelected="interaction.type === 'answer'", :interaction="interaction", :name="name", :color="color", @answerDisplayed="displayNextAnswer")
   .options.d-flex.align-items-center.justify-content-center(v-if="options.length")
-    Answer(v-for="interaction, index in options", :key="index", :interaction="interaction", :name="name", :color="color")
+    Answer(v-for="interaction, index in options", :key="index", :interaction="interaction", :name="name", :color="color", @newAnswerSelected="goToNextInteraction")
 </template>
 
 <script>
 import Answer from '../components/conversation/Answer.vue'
 import { idGenerator } from '../services/helpers.js'
-import { EventBus } from '../services/event-bus.js'
 
 export default {
   name: 'Home',
@@ -20,6 +19,7 @@ export default {
       model_position: 0,
       name: undefined,
       options: [],
+      selected: undefined,
       timeline: []
     }
   },
@@ -28,15 +28,27 @@ export default {
   },
   methods: {
     displayNextAnswer(position) {
-      if (this.model[position + 1]) {
+      let nextAnswer = this.model[position]
+      if (nextAnswer) {
         setTimeout(() => {
-          this.timeline.push(this.model[position + 1])
+          this.timeline.push(nextAnswer)
+          if (nextAnswer.answers) {
+            setTimeout(() => {
+              this.options = nextAnswer.answers
+            }, nextAnswer.delay * 1000)
+          }
         }, 1000)
       }
     },
     initConversation() {
       this.timeline.push(this.model[0])
     },
+    goToNextInteraction(interaction) {
+      this.options = []
+      this.selected = undefined
+      this.timeline.push(interaction)
+      this.displayNextAnswer(interaction.leadTo)
+    }
   },
   mounted() {
     let that = this
@@ -54,9 +66,6 @@ export default {
     .catch((err) => {
       console.log(err)
     })
-    EventBus.$on('answerSelected', (answer) => {
-      that.pushNextEntry(answer)
-    })
   }
 }
 </script>
@@ -65,14 +74,18 @@ export default {
 #Home {
   min-width: 100vw;
   min-height: 100vh;
+
   img {
     max-width: 400px;
   }
+
   #logo {
     max-width: 75px;
     margin-bottom: 25px;
   }
-  .timeline, .options {
+
+  .timeline,
+  .options {
     padding: 10px;
     width: 100%;
   }
