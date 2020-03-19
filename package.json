@@ -1,6 +1,6 @@
 {
   "name": "Chatbot-beta",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Guillaume Duhan",
   "main": "server.js",
   "description": "A vue.js chatbot for entrepreneurs.",
