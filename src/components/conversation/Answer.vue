@@ -18,13 +18,17 @@ import UserThumbnail from '../elements/UserThumbnail.vue'
 export default {
   name: 'Answer',
   props: {
-    color: String,
-    interaction: Object,
-    name: String
-  },
-  data() {
-    return {
-      isLoading: false
+    color: {
+      type: String,
+      default: ''
+    },
+    interaction: {
+      type: Object,
+      default: () => {}
+    },
+    name: {
+      type: String,
+      default: ''
     }
   },
   components: {
@@ -32,15 +36,21 @@ export default {
     TypingLoader,
     UserThumbnail
   },
+  data() {
+    return {
+      isLoading: false
+    }
+  },
   mounted() {
-    if (this.interaction.type !== 'answers') {
-      if (this.interaction.delay) {
-        this.isLoading = true
-        setTimeout(() => {
-          this.isLoading = false
-          this.$emit("answerIsDisplayed")
-        }, this.interaction.delay * 1000)
-      }
+    if (this.interaction.delay) {
+      this.isLoading = true
+      setTimeout(() => {
+        this.isLoading = false
+        if (this.interaction.type !== 'question') {
+          console.log('next')
+          this.$emit('answerDisplayed', this.interaction.position)
+        }
+      }, this.interaction.delay * 1000)
     }
   }
 }
