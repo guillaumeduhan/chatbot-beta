@@ -1,7 +1,7 @@
 <template lang="pug">
 #Home.d-flex.flex-column.align-items-end.justify-content-end
   .timeline.d-flex.flex-column.justify-content-end
-    Answer(v-for="interaction, index in timeline", :key="index", :class="['timeline--line--' + interaction.type, { 'align-items-end justify-content-end' : interaction.type === 'answer' }]", :interaction="interaction", :name="name", :color="color", @answerIsDisplayed="increaseCount")
+    Answer(v-for="interaction, index in timeline", :key="index", :class="['timeline--line--' + interaction.type, { 'align-items-end justify-content-end' : interaction.type === 'answer' }]", :interaction="interaction", :name="name", :color="color", @answerDisplayed="displayNextAnswer")
   .options.d-flex.align-items-center.justify-content-center(v-if="options.length")
     Answer(v-for="interaction, index in options", :key="index", :interaction="interaction", :name="name", :color="color")
 </template>
@@ -17,9 +17,9 @@ export default {
     return {
       color: undefined,
       model: undefined,
+      model_position: 0,
       name: undefined,
       options: [],
-      position: 1,
       timeline: []
     }
   },
@@ -27,28 +27,16 @@ export default {
     Answer
   },
   methods: {
-    initConversation() {
-      
-    },
-    pushEntryToTimeline(entry) {
-      // if (entry.delay) {
-      //   setTimeout(() => {
-      //     this.timeline.push(entry)
-      //     this.position++
-      //     this.timeline.push(this.model)
-      //   }, entry.delay + 500)
-      // } else {
-      //   this.timeline.push(entry)
-      // }
-    },
-    searchAndMount(botModel) {
-      let newAnswersModel = {
-        type: 'answers',
-        answers: {}
+    displayNextAnswer(position) {
+      if (this.model[position + 1]) {
+        setTimeout(() => {
+          this.timeline.push(this.model[position + 1])
+        }, 1000)
       }
-      this.model = _.orderBy(botModel, 'position', 'asc');
-      this.initConversation()
-    }
+    },
+    initConversation() {
+      this.timeline.push(this.model[0])
+    },
   },
   mounted() {
     let that = this
@@ -57,7 +45,8 @@ export default {
       if (data.exists) {
         this.name = data.data().chatbot_name
         this.color = data.data().color
-        this.searchAndMount(data.data().chatbot_model)
+        this.model = _.orderBy(data.data().chatbot_model, 'position', 'asc');
+        this.initConversation()
       } else {
         this.$router.push('/')
       }
