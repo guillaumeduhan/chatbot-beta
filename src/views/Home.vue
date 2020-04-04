@@ -12,6 +12,9 @@ import { idGenerator } from '../services/helpers.js'
 
 export default {
   name: 'Home',
+  components: {
+    Answer,
+  },
   data() {
     return {
       color: undefined,
@@ -20,15 +23,38 @@ export default {
       name: undefined,
       options: [],
       selected: undefined,
-      timeline: []
+      timeline: [],
     }
   },
-  components: {
-    Answer
+  mounted() {
+    const that = this
+    this.$firegun.getBot(this.$route.params.chatbotName)
+    .then((data) => {
+      if (data.exists) {
+        this.name = data.data().chatbot_name
+        this.color = data.data().color
+        this.model = _.orderBy(data.data().chatbot_model, 'position', 'asc')
+        console.log(this.model)
+        this.initConversation()
+      } else {
+        this.$router.push('/')
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   },
   methods: {
-    displayNextAnswer(position) {
-      let nextAnswer = this.model[position]
+    displayConversation(index) {
+      this.timeline.push(this.model[index])
+      if (this.model[index].type === 'message') {
+        setTimeout(() => {
+          this.displayNextAnswer(index + 1)
+        }, this.model[index].delay * 1000)
+      }
+    },
+    displayNextAnswer(index) {
+      const nextAnswer = this.model[index]
       if (nextAnswer) {
         setTimeout(() => {
           this.timeline.push(nextAnswer)
@@ -41,32 +67,15 @@ export default {
       }
     },
     initConversation() {
-      this.timeline.push(this.model[0])
+      this.displayConversation(0)
     },
     goToNextInteraction(interaction) {
       this.options = []
       this.selected = undefined
       this.timeline.push(interaction)
       this.displayNextAnswer(interaction.leadTo)
-    }
+    },
   },
-  mounted() {
-    let that = this
-    this.$firegun.getBot(this.$route.params.chatbotName)
-    .then((data) => {
-      if (data.exists) {
-        this.name = data.data().chatbot_name
-        this.color = data.data().color
-        this.model = _.orderBy(data.data().chatbot_model, 'position', 'asc');
-        this.initConversation()
-      } else {
-        this.$router.push('/')
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
 }
 </script>
 
