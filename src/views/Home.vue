@@ -7,8 +7,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Answer from '../components/conversation/Answer.vue'
-import { idGenerator } from '../services/helpers.js'
 
 export default {
   name: 'Home',
@@ -27,6 +27,7 @@ export default {
     }
   },
   mounted() {
+    // eslint-disable-next-line no-unused-vars
     const that = this
     this.$firegun.getBot(this.$route.params.chatbotName)
     .then((data) => {

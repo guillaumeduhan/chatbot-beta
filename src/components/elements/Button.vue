@@ -5,23 +5,23 @@
 
 <script>
 export default {
-  name: "Button",
+  name: 'Button',
   props: {
     color: {
       type: String,
-      default: ''
+      default: '',
     },
     interaction: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
-    selected: Boolean
+    selected: Boolean,
   },
   data() {
     return {
-      isHover: false
+      isHover: false,
     }
-  }
+  },
 }
 </script>
 
