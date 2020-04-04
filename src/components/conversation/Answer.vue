@@ -15,36 +15,29 @@ import UserThumbnail from '../elements/UserThumbnail.vue'
 
 export default {
   name: 'Answer',
+  components: {
+    Button,
+    TypingLoader,
+    UserThumbnail,
+  },
   props: {
     buttonSelected: Boolean,
     color: {
       type: String,
-      default: ''
+      default: '',
     },
     interaction: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     name: {
       type: String,
-      default: ''
-    }
-  },
-  components: {
-    Button,
-    TypingLoader,
-    UserThumbnail
+      default: '',
+    },
   },
   data() {
     return {
-      isLoading: false
-    }
-  },
-  methods: {
-    selectAnswer() {
-      if (this.interaction.type === 'answer') {
-        this.$emit('newAnswerSelected', this.interaction)
-      }
+      isLoading: false,
     }
   },
   mounted() {
@@ -57,7 +50,14 @@ export default {
         }
       }, this.interaction.delay * 1000)
     }
-  }
+  },
+  methods: {
+    selectAnswer() {
+      if (this.interaction.type === 'answer') {
+        this.$emit('newAnswerSelected', this.interaction)
+      }
+    },
+  },
 }
 </script>
 
