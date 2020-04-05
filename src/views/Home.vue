@@ -35,7 +35,6 @@ export default {
         this.name = data.data().chatbot_name
         this.color = data.data().color
         this.model = _.orderBy(data.data().chatbot_model, 'position', 'asc')
-        console.log(this.model)
         this.initConversation()
       } else {
         this.$router.push('/')
