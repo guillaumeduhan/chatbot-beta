@@ -1,25 +1,29 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
+import { firestorePlugin } from 'vuefire'
+import _ from 'lodash'
+import VueMq from 'vue-mq'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import { firestorePlugin } from 'vuefire'
-import _ from 'lodash'
-import VueMq from 'vue-mq'
+
+import FireGun from './plugins/FireGun'
 
 Vue.use(VueMq, {
   breakpoints: { // default breakpoints - customize this
     mobile: 900,
     desktop: 1200,
-  }
+  },
 })
 
 Vue.filter('letterGenerator', (string) => {
   return string.split('')[0].toUpperCase()
 })
 
-import FireGun from './plugins/FireGun'
+Vue.filter('substringExtract', (string) => {
+  return `${string.substring(0, 100)} ...`
+})
 
 Vue.use(BootstrapVue)
 Vue.use(firestorePlugin)
