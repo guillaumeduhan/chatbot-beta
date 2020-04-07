@@ -1,14 +1,10 @@
 <template lang="pug">
-  #app
+  #app.d-flex.align-items-center.justify-content-center
     router-view
 </template>
 
 <style lang="scss">
 #app {
   min-height: 100vh;
-
-  .container {
-    min-height: 100vh;
-  }
 }
 </style>
