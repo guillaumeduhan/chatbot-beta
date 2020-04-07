@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     goToUrl() {
-      console.log(this.content)
       window.open(this.content.url, '_blank')
     },
   },
